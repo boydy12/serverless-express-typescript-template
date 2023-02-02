@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+	"compilerOptions": {
+		"sourceMap": true,
+		"outDir": ".build",
+		"module": "CommonJS",
+		"resolveJsonModule": true,
+	},
+	"exclude": ["node_modules"]
+}
