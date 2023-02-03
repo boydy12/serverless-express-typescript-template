@@ -4,7 +4,7 @@ import {
   GetCommand,
   PutCommand,
 } from "@aws-sdk/lib-dynamodb";
-import express from "express";
+import express  from "express";
 import serverless from "serverless-http";
 
 const app = express();

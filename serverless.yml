@@ -1,4 +1,4 @@
-org: jamesboyd
+org: org-here
 app: aws-serverless-express-typescript
 service: aws-serverless-express-typescript
 frameworkVersion: '3'
@@ -21,14 +21,20 @@ custom:
     file: .serverless/output.json
   webpack:
     webpackConfig: 'webpack.config.js' # Name of webpack configuration file
-    includeModules: true # Node modules configuration for packaging
-    packager: 'npm' # Packager that will be used to package your external modules
     excludeFiles: src/**/*.test.js # Provide a glob for files to ignore
+    includeModules:
+      forceExclude:
+        - "@aws-sdk/client-dynamodb"
+        - "@aws-sdk/lib-dynamodb"
+        - "@aws-sdk/smithy-client"
+        - "@aws-sdk/types"
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   memorySize: 1024
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   iam:
     role:
       statements:

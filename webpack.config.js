@@ -1,6 +1,7 @@
 const path = require("path");
 const slsw = require("serverless-webpack");
 const isLocal = slsw.lib.webpack.isLocal;
+const nodeExternals = require("webpack-node-externals");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
@@ -12,7 +13,13 @@ module.exports = {
   resolve: {
     extensions: [".mjs", ".ts", ".js"],
   },
-  externals: ["@aws-sdk/client-dynamodb", "@aws-sdk/lib-dynamodb"],
+  externals: [
+    "@aws-sdk/client-dynamodb",
+    "@aws-sdk/lib-dynamodb",
+    "@aws-sdk/smithy-client",
+    "@aws-sdk/types"
+    // nodeExternals(),
+  ],
   output: {
     libraryTarget: "commonjs2",
     path: path.join(__dirname, ".webpack"),
@@ -22,8 +29,18 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules/,
+        exclude: [
+          [
+            path.resolve(__dirname, "node_modules"),
+            path.resolve(__dirname, ".serverless"),
+            path.resolve(__dirname, ".webpack"),
+          ],
+        ],
         loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+          experimentalWatchApi: true,
+        },
       },
     ],
   },
